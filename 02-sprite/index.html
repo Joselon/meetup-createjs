@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src='createjs-2013.12.12.min.js'></script>
+</head>
+<body>
+	<canvas id="spriteCanvas" width="580" height="100"></canvas>
+<script>
+var spriteStage;
+var centipede;
+window.addEventListener("load", initSpriteDemo, false);
+
+function initSpriteDemo() {
+	spriteStage = new createjs.Stage(document.getElementById("spriteCanvas"));
+	startSpriteDemo();
+}
+
+function startSpriteDemo() {
+	// Define the JSON data
+	var json = {
+		"frames": {"regX": 0, "width": 52, "regY": 0, "count": 56, "height": 60},
+		"animations": {"bodyWalk": [14, 26], "headWalk": [42, 54], "tailWalk": [0, 12], "bodyAltWalk": [28, 40]},
+		"images": ["centipede-article.png"]
+	};
+
+	// Create the spritesheet and pass in data.
+	spriteSheet = new createjs.SpriteSheet(json);
+
+	// Create a centipede container to control
+	centipede = new createjs.Container();
+
+	// Create 10 centipede pieces.
+	for (var i= 0; i<10; i++) {
+		var piece = new createjs.Sprite(spriteSheet);
+
+		// Choose the right piece
+		if(i==0) { piece.gotoAndPlay("headWalk"); }
+		else if(i==9) { piece.gotoAndPlay("tailWalk"); }
+		else if(i%2==1) { piece.gotoAndPlay("bodyWalk"); }
+		else { piece.gotoAndPlay("bodyAltWalk"); }
+
+		// The centipede is right-aligned.
+		piece.x = -i*30 - 30;
+		centipede.addChild(piece);
+	}
+
+	spriteStage.addChild(centipede);
+	createjs.Ticker.addEventListener("tick", tick);
+}
+
+function stopSpriteDemo() {
+	createjs.Ticker.removeListener(spriteTick);
+}
+
+// Each tick, move the centipede. Once it reaches the end, it loops back.
+function tick() {
+	centipede.x = (centipede.x + 8) % 880;
+	spriteStage.update();
+	console.log('tick');
+}
+
+</script>
+</body>
+</html>

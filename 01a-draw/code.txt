@@ -1,0 +1,36 @@
+<canvas id="test" width="600" height="600"></canvas>
+
+var stage = new createjs.Stage("test");
+
+var p = new createjs.Container();
+p.x = 100;
+p.y = 200;
+
+var c1 = new createjs.Shape();
+c1.graphics.beginFill("#FF0000");
+c1.graphics.drawRect(0, 0, 100, 100);
+c1.graphics.endFill();
+
+var c2 = new createjs.Shape();
+c2.graphics.beginFill("#00FF00");
+c2.graphics.drawRect(0, 0, 100, 100);
+c2.graphics.endFill();
+c2.x = 100;
+
+var c3 = new createjs.Shape();
+c3.graphics.beginFill("#0000FF");
+c3.graphics.drawRect(0, 0, 200, 200);
+c3.graphics.endFill();
+c3.x = 200;
+
+p.addChild(c1);
+p.addChild(c2);
+p.addChild(c3);
+
+stage.addChild(p);
+
+stage.update();
+
+var pt = p.localToGlobal(c3.x, c3.y);
+alert(pt.x + ',' + pt.y);
+alert(c3.x + ',' + c3.y);
